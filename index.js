@@ -11,6 +11,8 @@ try {
     const book3 = new Book("To Kill a Mockingbird", "Harper Lee", 1960);
     const book4 = new Book("Pride and Prejudice", "Jane Austen", 1813);
     const book5 = new Book("The Catcher in the Rye", "J.D. Salinger", 1951);
+    const book6 = new Book("The Hitchhiker's Guide to the Galaxy", "Ahmad", 1954);
+    const book7 = new Book("The Hitchhiker's Guide to the Galaxy", "Umer");
 
     // Add books to the library
     library.addBook(book1);
@@ -18,6 +20,8 @@ try {
     library.addBook(book3);
     library.addBook(book4);
     library.addBook(book5);
+    library.addBook(book6);
+    library.addBook(book7);
 
     // Display available books before any borrowing
     console.log("\nAvailable books:");
@@ -26,6 +30,7 @@ try {
     // Create users
     const user1 = new User("Ahmad", "ahmad@gmail.com");
     const user2 = new User("Umer", "umer@gmail.com");
+    const user3 = new User("Ali", "ali@gmail.com");
 
     // User 1 borrows "1984" 
     console.log("\nBorrowed books:");
@@ -33,6 +38,7 @@ try {
 
     //  User 2 borrows "To Kill a Mockingbird"
     library.borrowBook("To Kill a Mockingbird", user2);
+    library.borrowBook("The Catcher in the Rye", user3)
 
     // Display available books after borrowing
     console.log("\nAvailable books after borrowing:");
@@ -43,7 +49,7 @@ try {
     library.returnBook(book2, user1);
 
     // User 2 returns "The Catcher in the Rye"
-    library.returnBook(book5, user2);
+    library.returnBook(book3, user2);
 
     // Display available books after returning
     console.log("\nAvailable books after returning:");
