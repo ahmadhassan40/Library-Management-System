@@ -1,32 +1,49 @@
-const Transaction = require('./Transaction');
-
 class Library {
     constructor() {
-        this.books = [];     // List of available books
+        this.books = [];
         this.transactions = [];
     }
-    addBook(book) {  
-        this.books.push(book);     // Initially, the book is also available
-    }
 
-    borrowBook(bookTitle, user) {
-        const bookIndex = this.books.findIndex(book => book.title === bookTitle);
-        if (bookIndex === -1) throw new Error(`"${bookTitle}" is not available.`);
-
-        const book = this.books[bookIndex]; 
-        this.transactions.push(new Transaction(user, bookTitle, 'borrow'));
-        this.books.splice(bookIndex, 1); // Remove from available books after borrowing
-        console.log(`${user.name} borrowed "${bookTitle}"`);
-    }
-
-    returnBook(book, user) {
-        this.books.push(book); // Add back to available books
-        this.transactions.push(new Transaction(user, book.title, 'return'));
-        console.log(`${user.name} returned "${book.title}"`);
+    addBook(book) {
+        this.books.push(book);
     }
 
     getAvailableBooks() {
-        return this.books;
+        return this.books.filter(book => !book.isBorrowed);
+    }
+
+    borrowBook(bookTitle, user) {
+        const book = this.books.find(b => b.title === bookTitle);
+        if (!book) {
+            throw new Error("Book not found.");
+        }
+        if (book.isBorrowed) {
+            throw new Error("Book is already borrowed.");
+        }
+        book.isBorrowed = true; // Mark the book as borrowed
+        this.transactions.push({
+            user: user,
+            bookTitle: book.title,
+            type: "borrow",
+            date: new Date().toLocaleString()
+        });
+    }
+
+    returnBook(book, user) {
+        const existingBook = this.books.find(b => b.title === book.title);
+        if (!existingBook) {
+            throw new Error("Book not found.");
+        }
+        if (!existingBook.isBorrowed) {
+            throw new Error("This book was not borrowed.");
+        }
+        existingBook.isBorrowed = false; // Mark the book as available
+        this.transactions.push({
+            user: user,
+            bookTitle: existingBook.title,
+            type: "return",
+            date: new Date().toLocaleString()
+        });
     }
 
     getTransactions() {
